@@ -1,0 +1,66 @@
+name: binary increment
+source code: |-
+  # 2_2_2.yaml
+  input: '()[]'
+  blank: ' '
+  start state: start
+  table:
+    start:
+      ' ': {L: ok}
+      ['(','[','{']: {R: find-closed}
+      [')',']','}']: {L: not-ok}
+      
+    find-closed:
+      ' ': {L: empty-or-ok}
+      ['(','[','{','x']: R
+      ')': {write: 'x', L: closed_1}
+      ']': {write: 'x', L: closed_2}
+      '}': {write: 'x', L: closed_3}
+    
+    closed_1:
+      ' ': {L: not-ok}
+      '(': {write: 'x', R: find-closed} 
+      ['[','{']: {L: not-ok}
+      'x': L
+      
+    closed_2:
+      ' ': {L: not-ok}
+      '[': {write: 'x', R: find-closed} 
+      ['(','{']: {L: not-ok}
+      'x': L
+      
+    closed_3:
+      ' ': {L: not-ok}
+      '{': {write: 'x', R: find-closed} 
+      ['[','(']: {L: not-ok}
+      'x': L
+    
+    empty-or-ok:
+      ['(','[','{']: {L: not-ok}
+      'x': L
+      ' ': {R: ok}
+      
+    not-ok:
+      ['(',')','[',']','{','}','x']: {write: ' ', R}
+      ' ': {R: go-start}
+    
+    go-start:
+      ['(',')','[',']','{','}','x']: {write: ' ', R: go-start}
+      ' ': {write: 0, L: done}
+    
+    ok:
+      ' ': {write: 1, L: done}
+      'x': {write: ' ', R}
+      
+    done:
+positions:
+  start: {x: 397.13, y: 386.59, fixed: false}
+  find-closed: {x: 322.97, y: 278.78, fixed: false}
+  closed_1: {x: 253.25, y: 166.8, fixed: false}
+  closed_2: {x: 307.76, y: 135.34, fixed: false}
+  closed_3: {x: 437.84, y: 373.06, fixed: false}
+  empty-or-ok: {x: 387.78, y: 124.26, fixed: false}
+  not-ok: {x: 410.15, y: 238.8, fixed: false}
+  go-start: {x: 590.2, y: 223.51}
+  ok: {x: 481.95, y: 249.82, fixed: false}
+  done: {x: 613.58, y: 325.18}

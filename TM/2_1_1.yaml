@@ -1,0 +1,27 @@
+name: binary increment
+source code: |-
+  # 2_1_1.yaml
+  input: '11+11'
+  blank: ' '
+  start state: right
+  table:
+    # scan to the rightmost digit
+    right:
+      1: R
+      '+': {write: '1', R: end}
+    end:
+      1: R
+      ' ': {L: delete_one}
+    delete_one:
+      1: {write: ' ', L: return}
+    return:
+      1: L
+      ' ': {R: done}
+    
+    done:
+positions:
+  right: {x: 230, y: 250}
+  end: {x: 349.66, y: 172.75, fixed: false}
+  delete_one: {x: 401.46, y: 306.54, fixed: false}
+  return: {x: 510.63, y: 214.76, fixed: false}
+  done: {x: 613.58, y: 325.18}

@@ -1,0 +1,97 @@
+name: binary increment
+source code: |-
+  # 2_1_2.yaml
+  input: '11*11'
+  blank: ' '
+  start state: check-correct
+  table:
+    check-correct:
+      1: {R: check-mult}
+      '*': {L: check-empty}
+    check-mult:
+      1: R
+      '*': {R: check-empty}
+    check-empty:  
+      ' ': {R: done}
+      1: {L: go-start}
+    
+    go-start:
+      [1, '*', '=']: {L: go-start}
+      ' ':  {R: put_eq}
+    
+    put_eq:
+      [1, '*']: R
+      ' ': {write: '=', R: l-end}
+    
+    l-end:
+      ' ': {write: ' ', L: l-start}
+      [1, '=', '*']: L
+    l-start:
+      ' ': {write: ' ', R: start}
+      ['', '=', '*', 1]: L
+    
+    start:
+      1: R
+      ['x', '*']: {R: pr-second}
+    
+    pr-second:
+      'x': R
+      1: {write: 'x', L: go-first}
+      '=': {L: clear-l-start}
+      
+    remain-ones:
+      [1, '=']: {L: go-first}
+    
+    go-first:
+      ['x', '*']: L
+      1: {write: 'x', R: copy}
+      ' ': {R: restore}
+    
+    restore:
+      'x': {write: 1, R: restore}
+      '*': {R: start}
+    
+    copy:
+      [1, '=', '*', 'x']: R
+      ' ': {write: 1, R: go-end}
+    
+    go-end:
+      ' ': {write: ' ', L: go-second}
+    
+    go-second:
+      [1, 'x', '=']: L
+      '*': {L: go-first}
+    
+    clear-l-start:
+      'x': {write: 1, L: clear-l-start}
+      [1, '*']: L
+      '': {write: ' ', R: clear-l-end}
+      
+    clear-l-end:
+      [1, '*', 'x', '=']: R  
+      '': {write: ' ', L: finish}
+      
+    finish:
+      [1,'*','x','=']: L
+      ' ': {R: done}
+    done:
+positions:
+  check-correct: {x: 718.98, y: 41.8}
+  check-mult: {x: 726.61, y: 232.93}
+  check-empty: {x: 636.42, y: 131.04, fixed: false}
+  go-start: {x: 590.2, y: 223.51}
+  put_eq: {x: 495.89, y: 93.57, fixed: false}
+  l-end: {x: 363.09, y: 20, fixed: false}
+  l-start: {x: 223.57, y: 78.84}
+  start: {x: 345.61, y: 155.18, fixed: false}
+  pr-second: {x: 365.89, y: 301.25, fixed: false}
+  remain-ones: {x: 115.35, y: 243.56, fixed: false}
+  go-first: {x: 226.48, y: 340.94, fixed: false}
+  restore: {x: 210.17, y: 195.3, fixed: false}
+  copy: {x: 273.27, y: 480, fixed: false}
+  go-end: {x: 132.73, y: 480, fixed: false}
+  go-second: {x: 80.29, y: 350.81, fixed: false}
+  clear-l-start: {x: 404.08, y: 443.01, fixed: false}
+  clear-l-end: {x: 537.97, y: 480, fixed: false}
+  finish: {x: 676.47, y: 458.97, fixed: false}
+  done: {x: 613.58, y: 325.18}

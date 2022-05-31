@@ -1,0 +1,88 @@
+name: binary increment
+source code: |-
+  # 2_1_2.yaml
+  input: '012012'
+  blank: ' '
+  start state: start
+  table:
+    start:
+      ' ': {L: ok}
+      0: {write: 'x', R: go-one}
+      [1,2]: {R: not-ok}
+      'x': R
+    
+    go-one:
+      [0, 'x']: R
+      1: {write: 'x', R: go-two}
+      [2, ' ']: {L: not-ok}
+    
+    go-two:
+      ' ': {L: not-ok}
+      [1, 'x']: R
+      2: {write: 'x', L: go-start}
+    
+    go-start:
+      ' ': {R: start}
+      [0, 1, 2, 'x']: L
+    
+    ok:
+      ' ': {write: 1, L: done}
+      'x': {write: ' ', L}
+    
+    not-ok:
+      ' ': {L: del}
+      [0, 1, 2, 'x']: R
+    
+    del:
+      ' ': {write: 0, L: done}
+      [0, 1, 2, 'x']: {write: ' ', L}
+    
+    done:
+positions:
+  start: {x: 409.42, y: 311.77, fixed: false}
+  go-one: {x: 324.4, y: 176.34, fixed: false}
+  go-two: {x: 466.02, y: 92.97, fixed: false}
+  go-start: {x: 590.2, y: 223.51}
+  ok: {x: 515.62, y: 218.86, fixed: false}
+  not-ok: {x: 447.83, y: 209.9, fixed: false}
+  del: {x: 466.26, y: 363.57, fixed: false}
+  done: {x: 613.58, y: 325.18}
+editor contents: |-
+  # 2_2_1.yaml
+  input: '012012'
+  blank: ' '
+  start state: start
+  table:
+    start:
+      ' ': {L: ok}
+      0: {write: 'x', R: go-one}
+      [1,2]: {R: not-ok}
+      'x': R
+    
+    go-one:
+      [0, 'x']: R
+      1: {write: 'x', R: go-two}
+      [2, ' ']: {L: not-ok}
+    
+    go-two:
+      ' ': {L: not-ok}
+      [1, 'x']: R
+      2: {write: 'x', L: go-start}
+    
+    go-start:
+      ' ': {R: start}
+      [0, 1, 2, 'x']: L
+    
+    ok:
+      ' ': {write: 1, L: done}
+      'x': {write: ' ', L}
+    
+    not-ok:
+      ' ': {L: del}
+      [0, 1, 2, 'x']: R
+    
+    del:
+      ' ': {write: 0, L: done}
+      [0, 1, 2, 'x']: {write: ' ', L}
+    
+    done:
